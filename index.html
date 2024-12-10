@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD</title>
+    <link rel="stylesheet" href="css/milligram.css">
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <a href="create.html">
+                <button>create new</button>
+            </a>
+        </div>
+    </div>
+    
+<div class="container">
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ProductName</th>
+                    <th>ProductCode</th>
+                    <th>UnitPrice</th>
+                    <th>Qty</th>
+                    <th>TotalPrice</th>
+                    <th>Delete</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody id="itemlist">
+
+            </tbody>
+          </table>
+    </div>
+</div>
+
+<script src="js/axios.js"></script>
+
+<script>
+getlist()
+async function getlist() {
+    let URL = "https://crud.teamrabbil.com/api/v1/ReadProduct"
+    let res = await axios.get(URL)
+    let list = res.data['data']
+
+    list.forEach((item) => {
+        document.getElementById("itemlist").innerHTML +=(`
+    
+    <tr>    
+        <td>${item['ProductName']}</td>
+         <td>${item['ProductCode']}</td>
+         <td>${item['UnitPrice']}</td>
+         <td>${item['Qty']}</td>
+         <td>${item['TotalPrice']}</td> 
+         <td><button onclick="DeletItem('${item['_id']}')" )">Delete</button></td>
+         <td><button onclick="updateItem('${item['_id']}')" )">Update</button></td>
+
+        </tr>
+
+    `)
+    })
+   }
+
+//    for delet 
+
+async function DeletItem(id) {
+    let URL = `https://crud.teamrabbil.com/api/v1/DeleteProduct/${id}`
+    await axios.get(URL);
+    window.location.reload();
+}
+
+async function updateItem(id){
+    window.location= `update.html?id=${id}`
+}
+
+</script>
+
+
+</body>
+</html>
